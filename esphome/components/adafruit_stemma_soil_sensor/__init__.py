@@ -1,9 +1,11 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import i2c, sensor
-from esphome.const import ICON_EMPTY, UNIT_EMPTY
+from esphome.const import ICON_EMPTY, UNIT_EMPTY, CONF_ID
 
 DEPENDENCIES = ["i2c"]
+
+MULTI_CONF = True
 
 adafruit_stemma_soil_sensor_ns = cg.esphome_ns.namespace("adafruit_stemma_soil_sensor")
 AdafruitSTEMMASoilSensor = adafruit_stemma_soil_sensor_ns.class_(
@@ -22,6 +24,8 @@ CONFIG_SCHEMA = (sensor.sensor_schema(
 
 
 async def to_code(config):
-    var = await sensor.new_sensor(config)
+    var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
     await i2c.register_i2c_device(var, config)
+    # TODO move this to the separate sensor class
+    # await sensor.register_sensor(var, config)

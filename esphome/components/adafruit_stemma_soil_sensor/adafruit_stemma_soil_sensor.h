@@ -11,14 +11,13 @@ namespace esphome::adafruit_stemma_soil_sensor {
     Adafruit_seesaw myself;
     // TODO enable temperature sensor
     // Sensor *temperature_sensor = new Sensor();
+    // TODO instantiate this separately
     Sensor *humidity_sensor = new Sensor();
 
-    // TODO use configuration parameter here
-    // Update every 60s (value in ms)
+    // Update every 60s by default (value in ms)
     AdafruitSTEMMASoilSensor() : PollingComponent(60000) { }
 
     void setup() override {
-      // TODO use configuration parameter here
       myself.begin(0x36);
     }
 
@@ -27,6 +26,10 @@ namespace esphome::adafruit_stemma_soil_sensor {
       // temperature_sensor->publish_state(temperature);
       float humidity = myself.touchRead(0);
       humidity_sensor->publish_state(humidity);
+    }
+
+    void dump_config() override {
+
     }
   };
 
